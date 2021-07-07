@@ -15,8 +15,8 @@ public class Person extends GameObject {
   @Override
   public GameObject interact() {
       Scanner s = new Scanner(System.in);
-      for (GameObject g : possessions) {
-       System.out.println(name + " has a " + g + " and they might give it to you if you use the right command.");
+      for (GameObject g : possessions.values()) {
+       System.out.println(name + " has a " + g.getName() + " and they might give it to you if you use the right command.");
      }
        System.out.println("Please enter a command: ");
        String input = s.nextLine();
@@ -29,7 +29,7 @@ public class Person extends GameObject {
         }
        }
        //  retval.put()
-
+      return new GameObject();
 
   }
 }

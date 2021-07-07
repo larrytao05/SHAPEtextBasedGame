@@ -2,17 +2,19 @@ import java.util.*;
 
 // starts world and runs throughout game
 public class Main {
-    int currentLocation = 0;
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
+        int currentLocation = 0;
         HashMap<String, Runnable> commands = new HashMap<>();
         Location[] locations;
-        GameObject eiffelTower = new GameObject();
-        Location paris = new Location("Paris", new GameObject[]{eiffelTower});
+        GameObject eiffelTower = new GameObject("Eiffel Tower");
+        GameObject louvre = new GameObject("Louvre");
+        GameObject cathedral = new GameObject("Notre Dame Cathedral");
+        GameObject[] objects = {eiffelTower, louvre, cathedral};
+        Location paris = new Location("Paris", objects);
         locations = new Location[1];
         locations[0] = paris;
         System.out.println(locations[0].getName());
-        commands.put("/help", Main::help);
         
         Scanner s = new Scanner(System.in);
         GameWorld w = new GameWorld(0, locations);
@@ -21,34 +23,30 @@ public class Main {
         // everything that happens during the game happens here
         while (cont) {
             String input = s.nextLine();
-            String c = "/none";
-            for (String command : commands.keySet()) {
-                if (input.contains(command)) {
-                    c = command;
-                    break;
-                }
-            }
+            String c = input;
+            
 
             //running functions based on user commands
-            if (!c.equals("/none")) {
+            if (!c.equals(null)) {
                 if (c.contains("/interact"))
                 {
-                  for (GameObject o : locations[0].getObjects()) {
-                    if (c.contains(o.getName)) {
-                      o.interact();
+                  for (GameObject o : objects) {
+                    if (c.contains(o.getName())) {
+                      interact(o);
                     }
                   }
                 }
                 else if(c.equals("/list"))
                 {
-                  list(locations);
+                  list(locations, currentLocation);
                 }
                 else if(c.equals("/help"))
                 {
                   help();
                 }
                 else if(c.equals("/quit"))
-                  cont = false;
+                //maybe set 'cont' equal to false here?
+                  break;
 
             }
 
@@ -66,19 +64,15 @@ public class Main {
         o.interact();
     }
 
-    public static void list(Location[] locations) {
-      System.out.println("These are the objects in your location:\n");
-      for (GameObject o : locations[currentLocation])
+    public static void list(Location[] locations, int currentLocation) {
+      System.out.println("This is your location: " + locations[currentLocation].getName());
+      System.out.println("These are the objects in your location:");
+      GameObject[] objects = locations[currentLocation].getObjects();
+      for (GameObject object : objects)
       {
-        if (location[currentLocation] == 0)
-        {
-          GameObject[] objects = paris.getObjects();
-          for (GameObject object : objects)
-          {
-            System.out.println(object.getName());
-          }
-        }
+        System.out.println("\t" + object.getName());
       }
+      
       
     }
 

@@ -11,6 +11,12 @@ public class GameObject {
   }
 
   public GameObject interact() {
+    System.out.println("Successfully interacted with " + name);
     return new GameObject();
+  }
+
+  public String getName()
+  {
+    return name;
   }
 }

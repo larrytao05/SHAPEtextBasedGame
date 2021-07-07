@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class Location{
   private String name;
   private GameObject[] objects;
