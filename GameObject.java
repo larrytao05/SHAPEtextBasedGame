@@ -35,7 +35,7 @@ public class GameObject {
     }
     System.out.println("Successfully interacted with " + name);
     System.out.println("It didn't give you anything.");
-    return new GameObject();
+    return null;
   }
 
   public String getName()
@@ -43,7 +43,7 @@ public class GameObject {
     return name;
   }
 
-  public String setBounty(GameObject bounty) {
+  public void setBounty(GameObject bounty) {
     this.bounty = bounty;
   }
 }

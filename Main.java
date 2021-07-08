@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.*;
 
 // starts world and runs throughout game
@@ -5,6 +6,7 @@ public class Main {
 
     public static void main(String[] args) {
         int currentLocation = 0;
+        ArrayList<GameObject> backpack = new ArrayList<>();
         HashMap<String, Runnable> commands = new HashMap<>();
         Location[] locations = new Location[2];
         // Paris initialization
@@ -24,6 +26,18 @@ public class Main {
         Location london = new Location("London", londonObjects);
         locations[1] = london;
         System.out.println(locations[1].getName());
+        int length = 0;
+        for (Location l: locations) {
+            length += l.getObjects().length;
+        }
+        GameObject[] objects = new GameObject[length];
+        int counter = 0;
+        for (Location l : locations) {
+            for (GameObject o: l.getObjects()) {
+                objects[counter] = o;
+                counter ++;
+            }
+        }
         
         Scanner s = new Scanner(System.in);
         GameWorld w = new GameWorld(0, locations);
@@ -41,7 +55,7 @@ public class Main {
                 {
                   for (GameObject o : objects) {
                     if (c.contains(o.getName())) {
-                      interact(o);
+                      interact(o, backpack);
                     }
                   }
                 }
@@ -53,15 +67,16 @@ public class Main {
                 {
                   help();
                 }
-                else if(c.equals("/teleport"))
+                else if(c.contains("/teleport"))
                 {
-                  teleport();
+                  //teleport();
+                    System.out.println("Teleporting!");
                 }
                 else if(c.equals("/quit"))
                 {
-                //maybe set 'cont' equal to false here?
-                  cont = false;
                   break;
+                } else if (c.equals("/backpack")) {
+                    System.out.println(backpack);
                 }
 
                   
@@ -78,8 +93,11 @@ public class Main {
         System.out.println("This is a list of commands to help you get started.\n/interact (object): Allows you to interact with an object in your location. \n/list: Lists all objects and locations contained within your current location. \n/quit: Ends the game. \n/save: Saves your information to your device.");
     }
 
-    public static void interact(GameObject o) {
-        o.interact();
+    public static void interact(GameObject o, ArrayList<GameObject> backpack) {
+        GameObject retval = o.interact();
+        if (retval != null) {
+            backpack.add(retval);
+        }
     }
 
     public static void list(Location[] locations, int currentLocation) {
@@ -93,8 +111,8 @@ public class Main {
       
       
     }
-
-    public void teleport(){
+    /*
+    public void teleport(Location[] locations){
       System.out.println("Choose from the following locations to teleport to:");
       for (int i = 1; i <= locations.length; i++)
       {
@@ -108,6 +126,8 @@ public class Main {
         System.out.println("You have arrived in: " + locations[currentLocation].getName() + ". Try the /list command to see what you can interact with.")
       } c
     }
+
+     */
 
     public static void save() {
       // not sure how to do this, seeing as we don't have a database or a way of communicating with one
