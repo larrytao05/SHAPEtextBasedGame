@@ -1,35 +1,32 @@
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.HashMap;
 
 public class Person extends GameObject {
-  protected String name;
-  protected HashMap<String, GameObject> possessions;
-  protected String location;
 
-  public Person(String name, HashMap<String, GameObject> possessions, String location) {
-    this.name = name;
-    this.possessions = possessions;
-    this.location = location;
+  public Person(String name, GameObject bounty) {
+    super(name, bounty);
   }
 
   @Override
   public GameObject interact() {
       Scanner s = new Scanner(System.in);
-      for (GameObject g : possessions.values()) {
-       System.out.println(name + " has a " + g.getName() + " and they might give it to you if you use the right command.");
-     }
+      if (!Objects.isNull(bounty)) {
+          System.out.println(name + " has a " + bounty.getName() + " and they might give it to you if you enter the right command.");
+      }
        System.out.println("Please enter a command: ");
        String input = s.nextLine();
-       GameObject retval = null;
        if (input.contains("/ask")) {
-        for (String name : possessions.keySet()) {
-          if (input.contains(name)) {
-            return possessions.get(name);
-          }
-        }
+           if (!Objects.isNull(bounty)) {
+               System.out.println("You got a " + bounty.getName() + " from " + name + "!");
+               GameObject retval = bounty;
+               bounty = null;
+               return retval;
+           } else {
+               System.out.println(name + " didn't give you anything.");
+           }
        }
-       //  retval.put()
-      return new GameObject();
+      return null;
 
   }
 }

@@ -1,34 +1,62 @@
-import java.lang.reflect.Array;
 import java.util.*;
 
 // starts world and runs throughout game
 public class Main {
 
+
     public static void main(String[] args) {
         int currentLocation = 0;
         ArrayList<GameObject> backpack = new ArrayList<>();
         HashMap<String, Runnable> commands = new HashMap<>();
-        Location[] locations = new Location[2];
+        ArrayList<Location> locations = new ArrayList<>();
         // Paris initialization
         GameObject eiffelTower = new GameObject("Eiffel Tower");
         GameObject louvre = new GameObject("Louvre");
         GameObject coolPainting = new GameObject("Mona Lisa");
         louvre.setBounty(coolPainting);
         GameObject cathedral = new GameObject("Notre Dame Cathedral");
-        GameObject[] parisObjects = {eiffelTower, louvre, cathedral};
+        Person npc1 = new Person("Charlie", eiffelTower);
+        GameObject[] parisObjects = {eiffelTower, louvre, cathedral, npc1};
         Location paris = new Location("Paris", parisObjects);
-        locations[0] = paris;
-        System.out.println(locations[0].getName());
+        locations.add(paris);
+
+        System.out.println(locations.get(0).getName());
         // London initialization
         GameObject palace = new GameObject("Buckingham Palace");
         GameObject bigBen = new GameObject("Big Ben");
         GameObject[] londonObjects = {palace, bigBen};
         Location london = new Location("London", londonObjects);
-        locations[1] = london;
-        System.out.println(locations[1].getName());
+        locations.add(london);
+        //Rome initialization
+        GameObject colosseum = new GameObject("Colosseum");
+        GameObject pantheon = new GameObject("Pantheon");
+        GameObject cinqueTerre = new GameObject("Cinque Terre");
+        GameObject[] italyObjects = {colosseum, pantheon, cinqueTerre};
+        Location italy =  new Location("Italy", italyObjects);
+        locations.add(italy);
+        //NYC initializaiton
+        GameObject wtc = new GameObject("World Trade Center");
+        GameObject barclay = new GameObject("Barclays Center");
+        GameObject yankeeStadium = new GameObject("Yankee Stadium");
+        GameObject[] nyobjects = {wtc, barclay, yankeeStadium};
+        Location nyc = new Location("New York", nyobjects);
+        locations.add(nyc);
+
+        //LA - venice beach, hollywood sign, hollywood walk of fame
+
+
+        //China - great wall, forbidden city, terrecotta army
+
+
+        //Korea - jeju island, busan, seoul tower
+
+        //Chicago - Lincoln Park, The Chicago bean, Wrigley Field
+
         int length = 0;
         for (Location l: locations) {
-            length += l.getObjects().length;
+            if (l.getObjects().length > 0) {
+                length += l.getObjects().length;
+            }
         }
         GameObject[] objects = new GameObject[length];
         int counter = 0;
@@ -38,7 +66,7 @@ public class Main {
                 counter ++;
             }
         }
-        
+
         Scanner s = new Scanner(System.in);
         GameWorld w = new GameWorld(0, locations);
         Boolean cont = true;
@@ -47,39 +75,48 @@ public class Main {
         while (cont) {
             String input = s.nextLine();
             String c = input;
-            
+
 
             //running functions based on user commands
             if (!c.equals(null)) {
                 if (c.contains("/interact"))
                 {
-                  for (GameObject o : objects) {
-                    if (c.contains(o.getName())) {
-                      interact(o, backpack);
+                    for (GameObject o : objects) {
+                        if (c.contains(o.getName())) {
+                            interact(o, backpack);
+                        }
                     }
-                  }
                 }
                 else if(c.equals("/list"))
                 {
-                  list(locations, currentLocation);
+                    list(locations, currentLocation);
                 }
                 else if(c.equals("/help"))
                 {
-                  help();
+                    help();
                 }
                 else if(c.contains("/teleport"))
                 {
-                  //teleport();
                     System.out.println("Teleporting!");
+                    currentLocation = teleport(locations, currentLocation);
                 }
                 else if(c.equals("/quit"))
                 {
-                  break;
+                    break;
                 } else if (c.equals("/backpack")) {
-                    System.out.println(backpack);
+                    if (backpack.size() > 0) {
+                        System.out.print("\n[");
+                        for (GameObject o : backpack) {
+                            System.out.print(o.getName() + ", ");
+                        }
+                        System.out.println("]");
+                    } else {
+                        System.out.println(backpack);
+                    }
+
                 }
 
-                  
+
 
             }
 
@@ -90,7 +127,7 @@ public class Main {
     }
 
     public static void help() {
-        System.out.println("This is a list of commands to help you get started.\n/interact (object): Allows you to interact with an object in your location. \n/list: Lists all objects and locations contained within your current location. \n/quit: Ends the game. \n/save: Saves your information to your device.");
+        System.out.println("This is a list of commands to help you get started.\n/interact (object): Allows you to interact with an object in your location. \n/list: Lists all objects and locations contained within your current location. \n/teleport: Allows you to switch locations. \n/quit: Ends the game. \n/save: Saves your information to your device.");
     }
 
     public static void interact(GameObject o, ArrayList<GameObject> backpack) {
@@ -100,37 +137,42 @@ public class Main {
         }
     }
 
-    public static void list(Location[] locations, int currentLocation) {
-      System.out.println("This is your location: " + locations[currentLocation].getName());
-      System.out.println("These are the objects in your location:");
-      GameObject[] objects = locations[currentLocation].getObjects();
-      for (GameObject object : objects)
-      {
-        System.out.println("\t" + object.getName());
-      }
-      
-      
-    }
-    /*
-    public void teleport(Location[] locations){
-      System.out.println("Choose from the following locations to teleport to:");
-      for (int i = 1; i <= locations.length; i++)
-      {
-        System.out.println( "\t" i + ". " locations[i-1].getName());
-      }
-      System.out.println("Select the number corresponding to the location you desire to teleport to: ");
-      int destination = s.nextInt();
-      currentLocation = destination;
-      try
-      {
-        System.out.println("You have arrived in: " + locations[currentLocation].getName() + ". Try the /list command to see what you can interact with.")
-      } c
+    public static void list(ArrayList<Location> locations, int currentLocation) {
+        System.out.println("This is your location: " + locations.get(currentLocation).getName());
+        System.out.println("These are the objects in your location:");
+        GameObject[] objects = locations.get(currentLocation).getObjects();
+        for (GameObject object : objects)
+        {
+            System.out.println("\t" + object.getName());
+        }
+
+
     }
 
-     */
+    public static int teleport(ArrayList<Location> locations, int currentLocation){
+        Scanner s = new Scanner(System.in);
+        System.out.println("Choose from the following locations to teleport to:");
+        for (int i = 1; i <= locations.size(); i++)
+        {
+            System.out.println( "\t" + i + ". " + locations.get(i - 1).getName());
+        }
+        System.out.println("Select the number corresponding to the location you desire to teleport to: ");
+        int destination = s.nextInt()-1;
+        currentLocation = destination;
+        try
+        {
+            System.out.println("You have arrived in: " + locations.get(currentLocation).getName() + ". Try the /list command to see what you can interact with.");
+        }
+        catch (NullPointerException ne)
+        {
+            System.out.println("The number you entered is outside the list of places you can go to. Please enter only a number from 1-" + locations.size());
+            destination = s.nextInt()-1;
+        }
+        return currentLocation;
+    }
 
     public static void save() {
-      // not sure how to do this, seeing as we don't have a database or a way of communicating with one
-      // we could try saving it to a file on the user's computer
+        // not sure how to do this, seeing as we don't have a database or a way of communicating with one
+        // we could try saving it to a file on the user's computer
     }
 }
