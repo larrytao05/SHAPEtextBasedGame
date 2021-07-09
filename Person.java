@@ -3,8 +3,10 @@ import java.util.Scanner;
 import java.util.HashMap;
 
 public class Person extends GameObject {
+  private String[] dialogue;
 
-  public Person(String name, GameObject bounty) {
+  public Person(String name, GameObject bounty, String[] dialogue) {
+    this.dialogue = dialogue;
     super(name, bounty);
   }
 
@@ -16,7 +18,7 @@ public class Person extends GameObject {
       }
        System.out.println("Please enter a command: ");
        String input = s.nextLine();
-       if (input.contains("/ask")) {
+       if (input.contains("/take")) {
            if (!Objects.isNull(bounty)) {
                System.out.println("You got a " + bounty.getName() + " from " + name + "!");
                GameObject retval = bounty;
@@ -25,6 +27,12 @@ public class Person extends GameObject {
            } else {
                System.out.println(name + " didn't give you anything.");
            }
+       } else if (input.contains("/talk")) {
+         System.out.println(name + ": ");
+         String input1 = s.nextLine();
+         if input.contains("/continue") {
+           System.out.println(name + ": ");
+         }
        }
       return null;
 

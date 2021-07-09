@@ -39,18 +39,42 @@ public class Main {
         GameObject barclay = new GameObject("Barclays Center");
         GameObject yankeeStadium = new GameObject("Yankee Stadium");
         GameObject[] nyobjects = {wtc, barclay, yankeeStadium};
-        Location nyc = new Location("New York", nyobjects);
+        Location nyc = new Location("New York City", nyobjects);
         locations.add(nyc);
-
-        //LA - venice beach, hollywood sign, hollywood walk of fame
-
+        //LA initialization
+        GameObject venice_beach = new GameObject("Venice Beach");
+        GameObject hollywood_sign = new GameObject("Hollywood Sign");
+        GameObject hollywood_walk = new GameObject("Hollywood Walk of Fame");
+        GameObject[] LAObjects = {venice_beach, hollywood_sign, hollywood_walk};
+        Location LA = new Location("Los Angeles", LAObjects);
+        locations.add(LA);
 
         //China - great wall, forbidden city, terrecotta army
+        GameObject greatWall = new GameObject("The Great Wall of China");
+        GameObject forbiddenCity = new GameObject("The Forbidden City");
+        GameObject terracotta = new GameObject("The Terracotta Army");
+        GameObject[] chinaObjects = {greatWall, forbiddenCity, terracotta};
+        Location china = new Location("China", chinaObjects);
+        locations.add(China);
 
 
         //Korea - jeju island, busan, seoul tower
 
+        GameObject jeju = new GameObject("Jeju Island");
+        GameObject busan = new GameObject("Busan");
+        GameObject tower = new GameObject("Seoul Tower");
+        GameObject[] LAObjects = {jeju, busan, tower};
+        Location KoreaObjects = new Location("Korea", LAObjects);
+        locations.add(Korea);
         //Chicago - Lincoln Park, The Chicago bean, Wrigley Field
+
+        GameObject park = new GameObject("Lincoln Park");
+        GameObject chicago_bean = new GameObject("Cloud Gate");
+        GameObject field = new GameObject("Wrigley Field");
+        GameObject[] chicagoObjects = {park, chicago_bean, field};
+        Location chicago = new Location("Chicago", chicagoObjects);
+        locations.add(chicago);
+        
 
         int length = 0;
         for (Location l: locations) {
