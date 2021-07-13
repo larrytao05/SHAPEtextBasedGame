@@ -1,13 +1,15 @@
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.HashMap;
 
 public class Person extends GameObject {
-  private String[] dialogue;
+  private ArrayList<String> dialogue;
 
-  public Person(String name, GameObject bounty, String[] dialogue) {
-    this.dialogue = dialogue;
-    super(name, bounty);
+  public Person(String name, GameObject bounty, ArrayList<String> dialogue) {
+      super(name, bounty);
+      this.dialogue = dialogue;
+
   }
 
   @Override
@@ -28,10 +30,14 @@ public class Person extends GameObject {
                System.out.println(name + " didn't give you anything.");
            }
        } else if (input.contains("/talk")) {
-         System.out.println(name + ": ");
-         String input1 = s.nextLine();
-         if input.contains("/continue") {
-           System.out.println(name + ": ");
+           Boolean cont = true;
+           while (dialogue.size() > 0 && cont) {
+             System.out.println(dialogue.remove(0));
+             input = s.nextLine();
+             if (!input.contains("/continue")) {
+                 System.out.println("Well, that's all from me. See you around!");
+                 cont = false;
+             }
          }
        }
       return null;

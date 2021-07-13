@@ -1,4 +1,6 @@
 import java.util.*;
+import java.io.*;
+
 
 // starts world and runs throughout game
 public class Main {
@@ -15,22 +17,47 @@ public class Main {
         GameObject coolPainting = new GameObject("Mona Lisa");
         louvre.setBounty(coolPainting);
         GameObject cathedral = new GameObject("Notre Dame Cathedral");
-        Person npc1 = new Person("Charlie", eiffelTower);
-        GameObject[] parisObjects = {eiffelTower, louvre, cathedral, npc1};
+        ArrayList<String> charlieDialogue = new ArrayList<>();
+        charlieDialogue.add("Hi! My name is Charlie.");
+        charlieDialogue.add("If there's anything you ever want to know about this city, you can ask me.");
+        charlieDialogue.add("By the way, I heard from one of my sources that if you ever wanted to steal something from the Louvre, today's the day. All of the guards have mysteriously disappeared!");
+        Person npc1 = new Person("Charlie", eiffelTower, charlieDialogue);
+        ArrayList<String> macaronDialogue = new ArrayList<>();
+        macaronDialogue.add("I'm Macaron, the president of this good-for-nothing country.");
+        macaronDialogue.add("One of the most acclaimed paintings of all time was stolen from right under our noses a few days ago. I only hope that something like that doesn't happen again.");
+        macaronDialogue.add("I'd leave this place by teleporting as soon as I could if I were you. Anywhere is better than here.");
+        Person npc2 = new Person("Macaron", null, macaronDialogue);
+        GameObject[] parisObjects = {eiffelTower, louvre, cathedral, npc1, npc2};
         Location paris = new Location("Paris", parisObjects);
         locations.add(paris);
-
-        System.out.println(locations.get(0).getName());
         // London initialization
-        GameObject palace = new GameObject("Buckingham Palace");
+        ArrayList<String> victoriaDialogue = new ArrayList<>();
+        victoriaDialogue.add("You sneak behind Victoria while she's preparing for an upcoming dinner party.");
+        victoriaDialogue.add(" You stab her cleanly through the heart, the knife not even making a sound as it passes through her body.");
+        victoriaDialogue.add(" Taking one last look at her crumpled figure on the floor, you jump out of the window of Buckingham Palace.");
+        Person victoria = new Person("Victoria", null, victoriaDialogue);
+        GameObject palace = new GameObject("Buckingham Palace", victoria);
         GameObject bigBen = new GameObject("Big Ben");
-        GameObject[] londonObjects = {palace, bigBen};
+        GameObject royalCrown = new GameObject("Royal Crown of England");
+        ArrayList<String> queenDialogue = new ArrayList<>();
+        queenDialogue.add("Well, hello there. I see you are one of those travelers everyone's been going crazy about lately. If you don't mind, I have a small task for you to complete. Rest assured you will recieve a hefty reward shall you complete it.");
+        queenDialogue.add("Your task is simple. There is a royal crown in my possession currently. If you wear the crown to Buckingham Palace, you will be allowed into the building no questions asked. Once you get in, assassinate my daughter Victoria and escape without getting caught.");
+        queenDialogue.add("If you succeed, a guard by the name of Michael will be waiting outside with your reward.");
+        queenDialogue.add("Good luck!");
+        Person queen = new Person("Queen Elizabeth", royalCrown, queenDialogue);
+        ArrayList<String> michaelDialogue = new ArrayList<>();
+        michaelDialogue.add("Here is your reward. By the way, I heard from a little bird that Italy could be an attractive place for you to visit next, if you know what I mean.");
+        Person michael = new Person("Michael the Guard", reward, michaelDialogue);
+        GameObject[] londonObjects = {palace, bigBen, queen, michael};
         Location london = new Location("London", londonObjects);
         locations.add(london);
         //Rome initialization
         GameObject colosseum = new GameObject("Colosseum");
         GameObject pantheon = new GameObject("Pantheon");
         GameObject cinqueTerre = new GameObject("Cinque Terre");
+        GameObject pasta = new GameObject("Pasta Carbonara");
+        ArrayList<String> guideDialogue = new ArrayList<>();
+        Person tourGuide = new Person("Antonio", pasta, guideDialogue);
         GameObject[] italyObjects = {colosseum, pantheon, cinqueTerre};
         Location italy =  new Location("Italy", italyObjects);
         locations.add(italy);
@@ -38,7 +65,11 @@ public class Main {
         GameObject wtc = new GameObject("World Trade Center");
         GameObject barclay = new GameObject("Barclays Center");
         GameObject yankeeStadium = new GameObject("Yankee Stadium");
-        GameObject[] nyobjects = {wtc, barclay, yankeeStadium};
+        ArrayList<String> fanDialogue = new ArrayList<>();
+        fanDialogue.add("Hey!! Watch where your'e going man! I'm trying to get to the Yankee Stadium before all the good seats get taken! ");
+        fan.Dialogue("Also, today is a gonna be a good game if you wanna come. Hoping to see Aaron Judge and Gary Sanchez get some home runs against those NY-counterfeit Mets. I hope your's not a Mets fan because if you are, you might as well run away before I do something about it. ");
+        Person yankeeFan = new Person("Joseph", null, fanDialogue);
+        GameObject[] nyobjects = {wtc, barclay, yankeeStadium, yankeeFan};
         Location nyc = new Location("New York City", nyobjects);
         locations.add(nyc);
         //LA initialization
@@ -48,26 +79,21 @@ public class Main {
         GameObject[] LAObjects = {venice_beach, hollywood_sign, hollywood_walk};
         Location LA = new Location("Los Angeles", LAObjects);
         locations.add(LA);
-
-        //China - great wall, forbidden city, terrecotta army
+        //China initialization
         GameObject greatWall = new GameObject("The Great Wall of China");
         GameObject forbiddenCity = new GameObject("The Forbidden City");
         GameObject terracotta = new GameObject("The Terracotta Army");
         GameObject[] chinaObjects = {greatWall, forbiddenCity, terracotta};
         Location china = new Location("China", chinaObjects);
-        locations.add(China);
-
-
-        //Korea - jeju island, busan, seoul tower
-
+        locations.add(china);
+        //Korea initialization
         GameObject jeju = new GameObject("Jeju Island");
         GameObject busan = new GameObject("Busan");
         GameObject tower = new GameObject("Seoul Tower");
-        GameObject[] LAObjects = {jeju, busan, tower};
-        Location KoreaObjects = new Location("Korea", LAObjects);
-        locations.add(Korea);
-        //Chicago - Lincoln Park, The Chicago bean, Wrigley Field
-
+        GameObject[] koreaObjects = {jeju, busan, tower};
+        Location korea = new Location("Korea", koreaObjects);
+        locations.add(korea);
+        //Chicago initialization
         GameObject park = new GameObject("Lincoln Park");
         GameObject chicago_bean = new GameObject("Cloud Gate");
         GameObject field = new GameObject("Wrigley Field");
@@ -92,7 +118,12 @@ public class Main {
         }
 
         Scanner s = new Scanner(System.in);
-        GameWorld w = new GameWorld(0, locations);
+
+        //spawn
+        System.out.println("Where would you like to spawn?");
+        int spawn = s.nextInt();
+        GameWorld w = new GameWorld(spawn, locations);
+        currentLocation = spawn;
         Boolean cont = true;
 
         // everything that happens during the game happens here
@@ -151,7 +182,7 @@ public class Main {
     }
 
     public static void help() {
-        System.out.println("This is a list of commands to help you get started.\n/interact (object): Allows you to interact with an object in your location. \n/list: Lists all objects and locations contained within your current location. \n/teleport: Allows you to switch locations. \n/quit: Ends the game. \n/save: Saves your information to your device.");
+        System.out.println("This is a list of commands to help you get started.\n/interact (object): Allows you to interact with an object in your location. \n/list: Lists all objects and locations contained within your current location. \n/teleport: Allows you to switch locations. \n/quit: Ends the game. \n/save: Saves your information to your device. \n/backpack: shows you the contents of your backpack.");
     }
 
     public static void interact(GameObject o, ArrayList<GameObject> backpack) {
@@ -187,7 +218,7 @@ public class Main {
         {
             System.out.println("You have arrived in: " + locations.get(currentLocation).getName() + ". Try the /list command to see what you can interact with.");
         }
-        catch (NullPointerException ne)
+        catch (IndexOutOfBoundsException ne)
         {
             System.out.println("The number you entered is outside the list of places you can go to. Please enter only a number from 1-" + locations.size());
             destination = s.nextInt()-1;
